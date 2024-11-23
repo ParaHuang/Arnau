@@ -20,25 +20,29 @@ public class Planet {
     private boolean hasRings;
     private Atmosphere atmosphere;
     public Planet(String name, int numberOfMoons, double mass, double radius, double gravity, LocalDate lastAlbedoMeasurement, boolean hasRings) {
-        this.name = name;
-        this.numberOfMoons = numberOfMoons;
-        this.mass = mass;
-        this.radius = radius;
-        this.gravity = gravity;
-        this.lastAlbedoMeasurement = lastAlbedoMeasurement;
-        this.hasRings = hasRings;
+        setName(name);
+        setNumberOfMoons(numberOfMoons);
+        setMass(mass);
+        setRadius(radius);
+        setGravity(gravity);
+        setLastAlbedoMeasurement(lastAlbedoMeasurement);
+        setHasRings(hasRings);
     }
 
     public Planet(String name, int numberOfMoons, double mass, double radius, double gravity, LocalDate lastAlbedoMeasurement, boolean hasRings,
                   String composition, LocalDate lastObservation, int airQuality, double pressure, double density, boolean hasClouds) {
-        this.name = name;
-        this.numberOfMoons = numberOfMoons;
-        this.mass = mass;
-        this.radius = radius;
-        this.gravity = gravity;
-        this.lastAlbedoMeasurement = lastAlbedoMeasurement;
-        this.hasRings = hasRings;
-        atmosphere = new Atmosphere(composition, lastObservation, airQuality, pressure, density, hasClouds);
+        setName(name);
+        setNumberOfMoons(numberOfMoons);
+        setMass(mass);
+        setRadius(radius);
+        setGravity(gravity);
+        setLastAlbedoMeasurement(lastAlbedoMeasurement);
+        setHasRings(hasRings);
+        try {
+            setAtmosphere(composition, lastObservation, airQuality, pressure, density, hasClouds);
+        }catch (IllegalArgumentException e){
+            //something wrong with creating atmosphere,but we don't want it to affect creating a planet
+        }
     }
 
     public String getName() {
@@ -46,6 +50,9 @@ public class Planet {
     }
 
     private void setName(String name) {
+        if(name == null || name.isBlank()){
+            throw new IllegalArgumentException(INVALID_NAME);
+        }
         this.name = name;
     }
 
@@ -54,6 +61,9 @@ public class Planet {
     }
 
     private void setNumberOfMoons(int numberOfMoons) {
+        if(numberOfMoons < 0){
+            throw new IllegalArgumentException(INVALID_NUMBER_OF_MOONS);
+        }
         this.numberOfMoons = numberOfMoons;
     }
 
@@ -62,6 +72,9 @@ public class Planet {
     }
 
     private void setMass(double mass) {
+        if(mass < MIN_MASS){
+            throw new IllegalArgumentException(INVALID_MASS);
+        }
         this.mass = mass;
     }
 
@@ -70,6 +83,9 @@ public class Planet {
     }
 
     private void setRadius(double radius) {
+        if(radius < MIN_RADIUS){
+            throw new IllegalArgumentException(INVALID_RADIUS);
+        }
         this.radius = radius;
     }
 
@@ -78,6 +94,9 @@ public class Planet {
     }
 
     private void setGravity(double gravity) {
+        if(gravity <= 0){
+            throw new IllegalArgumentException(INVALID_GRAVITY);
+        }
         this.gravity = gravity;
     }
 
@@ -86,6 +105,10 @@ public class Planet {
     }
 
     private void setLastAlbedoMeasurement(LocalDate lastAlbedoMeasurement) {
+        LocalDate today = LocalDate.now();
+        if (lastAlbedoMeasurement == null || lastAlbedoMeasurement.isAfter(today)) {
+            throw new IllegalArgumentException(INVALID_LAST_ALBEDO_MEASUREMENT);
+        }
         this.lastAlbedoMeasurement = lastAlbedoMeasurement;
     }
 
