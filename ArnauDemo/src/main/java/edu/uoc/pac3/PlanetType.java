@@ -1,14 +1,14 @@
 package edu.uoc.pac3;
 
 public enum PlanetType {
-    ROCKY("Rocky Planet",15,1000,30),
+    ROCKY("Rocky Planet",15,1000,300),
     GAS_GIANT("Gas Giant", 50, 3000, -150),
     ICE_GIANT("Ice Giant",40, 5000, -200);
 
-    private String description;
-    private double magneticFieldStrength;
-    private double averageDistanceFromStar;
-    private double averageTemperature;
+    private final String description;
+    private final double magneticFieldStrength;
+    private final double averageDistanceFromStar;
+    private final double averageTemperature;
 
     PlanetType(String description,double magneticFieldStrength,double averageDistanceFromStar,double averageTemperature) {
         this.description = description;
@@ -33,7 +33,7 @@ public enum PlanetType {
         return averageTemperature;
     }
 
-    PlanetType getType(String description){
+    public static PlanetType getType(String description){
         for(PlanetType type:values()){
             if(type.getDescription().equals(description)){
                 return type;
@@ -42,10 +42,11 @@ public enum PlanetType {
         return null;
     }
 
-    PlanetType getNextExpectedType(){
+    public PlanetType getNextExpectedType(){
         PlanetType[] types = values();
         int currentIndex = this.ordinal();
         int nextIndex = (currentIndex + 1) % types.length;
         return types[nextIndex];
     }
+
 }

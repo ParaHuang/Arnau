@@ -9,6 +9,8 @@ public class Planet {
     public static final String INVALID_RADIUS = "[ERROR] Radius cannot be less than 500 km";
     public static final String INVALID_GRAVITY = "[ERROR] Gravity cannot be negative or zero";
     public static final String INVALID_LAST_ALBEDO_MEASUREMENT = "[ERROR] Last albedo measurement cannot be null or in the future";
+    public static final String INVALID_PLANET_TYPE = "[ERROR] Invalid planet type";
+
     private static final double MIN_MASS = 5.97e22;
     private static final double MIN_RADIUS = 500;
     private String name;
@@ -19,7 +21,8 @@ public class Planet {
     private LocalDate lastAlbedoMeasurement;
     private boolean hasRings;
     private Atmosphere atmosphere;
-    public Planet(String name, int numberOfMoons, double mass, double radius, double gravity, LocalDate lastAlbedoMeasurement, boolean hasRings) {
+    private PlanetType type;
+    public Planet(String name, int numberOfMoons, double mass, double radius, double gravity, LocalDate lastAlbedoMeasurement, boolean hasRings,PlanetType type) {
         setName(name);
         setNumberOfMoons(numberOfMoons);
         setMass(mass);
@@ -27,9 +30,10 @@ public class Planet {
         setGravity(gravity);
         setLastAlbedoMeasurement(lastAlbedoMeasurement);
         setHasRings(hasRings);
+        setType(type);
     }
 
-    public Planet(String name, int numberOfMoons, double mass, double radius, double gravity, LocalDate lastAlbedoMeasurement, boolean hasRings,
+    public Planet(String name, int numberOfMoons, double mass, double radius, double gravity, LocalDate lastAlbedoMeasurement, boolean hasRings,PlanetType type,
                   String composition, LocalDate lastObservation, int airQuality, double pressure, double density, boolean hasClouds) {
         setName(name);
         setNumberOfMoons(numberOfMoons);
@@ -38,6 +42,7 @@ public class Planet {
         setGravity(gravity);
         setLastAlbedoMeasurement(lastAlbedoMeasurement);
         setHasRings(hasRings);
+        setType(type);
         try {
             setAtmosphere(composition, lastObservation, airQuality, pressure, density, hasClouds);
         }catch (IllegalArgumentException e){
@@ -126,5 +131,16 @@ public class Planet {
 
     private void setAtmosphere(String composition, LocalDate lastObservation, int airQuality, double pressure, double density, boolean hasClouds) {
         this.atmosphere = new Atmosphere(composition, lastObservation, airQuality, pressure, density, hasClouds);
+    }
+
+    public PlanetType getType() {
+        return type;
+    }
+
+    private void setType(PlanetType type) {
+        if(type == null){
+            throw new IllegalArgumentException(INVALID_PLANET_TYPE);
+        }
+        this.type = type;
     }
 }
