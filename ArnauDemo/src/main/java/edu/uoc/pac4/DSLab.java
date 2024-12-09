@@ -115,20 +115,21 @@ public class DSLab {
 
     @Override
     public String toString() {
-        return "DSLab{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", versionMajor=" + versionMajor +
-                ", versionMinor=" + versionMinor +
-                ", versionPatch=" + versionPatch +
-                ", cpu=" + cpu +
-                ", university=" + university +
-                ", status=" + status +
-                '}';
+        return name+"\n" +
+                "\tDescription: " + description + "\n" +
+                "\tVersion: " + getVersion() + "\n" +
+                "\tStatus: " + getStatus() + "\n" +
+                "\tCPU: " + cpu + "\n" +
+                "\tUniversity: " + university.getName()+", "+university.getAbbreviation()+", "+university.getFoundationDate()+", "+university.getAddress()+", "+university.getWebsite();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if(obj == null) return false;
+        if(this == obj) return true;
+        if(getClass() != obj.getClass()) return false;
+
+        DSLab other = (DSLab) obj;
+        return name.equals(other.name) && getVersion().equals(other.getVersion());
     }
 }
