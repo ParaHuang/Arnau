@@ -1,6 +1,11 @@
 package edu.uoc.pac4;
 
+import edu.uoc.pac4.activity.Activity;
+import edu.uoc.pac4.activity.Evaluable;
 import edu.uoc.pac4.university.University;
+import edu.uoc.pac4.user.User;
+
+import java.util.LinkedList;
 
 public class DSLab {
     public static final long MIN_CPU_REQUIRED = 1_073_741_824L;
@@ -12,6 +17,10 @@ public class DSLab {
     private long cpu;
     private University university;
     private DSLabStatus status;
+    private LinkedList<Activity> activities;
+    private LinkedList<User> users;
+
+    private LinkedList<Evaluable> evaluableActivities;
 
     public DSLab(String name, String description, int versionMajor, int versionMinor, int versionPatch, long cpu, University university) throws DSLabException {
         setName(name);
@@ -22,6 +31,10 @@ public class DSLab {
         setCpu(cpu);
         setUniversity(university);
         setStatus(DSLabStatus.ACTIVE);
+
+        activities = new LinkedList<>();
+        users = new LinkedList<>();
+        evaluableActivities = new LinkedList<>();
     }
 
     public String getName() {
@@ -131,5 +144,31 @@ public class DSLab {
 
         DSLab other = (DSLab) obj;
         return name.equals(other.name) && getVersion().equals(other.getVersion());
+    }
+
+    public void addActivity(Activity activity){
+        activities.add(activity);
+    }
+
+    public LinkedList<Activity> getActivities() {
+        return activities;
+    }
+
+
+    public void addUser(User user){
+        users.add(user);
+    }
+
+    public LinkedList<User> getUsers() {
+        return users;
+    }
+
+    public LinkedList<Evaluable> getEvaluableActivities() {
+        for (Activity a:activities) {
+            if(a instanceof Evaluable){
+                evaluableActivities.add((Evaluable) a);
+            }
+        }
+        return evaluableActivities;
     }
 }

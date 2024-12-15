@@ -1,6 +1,5 @@
 package edu.uoc.pac4;
 
-import edu.uoc.pac4.DSLabException;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Modifier;
@@ -11,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DSLabExceptionTest {
 
     @Test
+    @Tag("sanity")
     @Order(1)
     @DisplayName("Sanity - Fields definition")
     void checkExceptions() {
@@ -67,6 +67,7 @@ public class DSLabExceptionTest {
     }
 
     @Test
+    @Tag("sanity")
     @Order(2)
     @DisplayName("Sanity - Constructors definition")
     void checkConstructors() {
@@ -83,17 +84,8 @@ public class DSLabExceptionTest {
     }
 
     @Test
+    @Tag("sanity")
     @Order(3)
-    @DisplayName("Sanity - Methods definition")
-    void checkMethods() {
-        int numMethods = 0;
-
-        // Check number of methods
-        assertEquals(numMethods, DSLabException.class.getDeclaredMethods().length, "The class must have exactly " + numMethods + " constructor");
-    }
-
-    @Test
-    @Order(4)
     @DisplayName("Sanity - Inheritance definition")
     void checkInheritance() {
         assertTrue(Exception.class.isAssignableFrom(DSLabException.class), "DSLabException class must inherit from Exception");

@@ -52,18 +52,31 @@ public abstract class Activity implements Cloneable{
             if(this.getClass() == ActivityQuiz.class) {
                 ActivityQuiz quiz = (ActivityQuiz) this;
                 return new ActivityQuiz(name,description,quiz.getType());
-            }else if(this.getClass() == ActivityProgramming.class){
-                return (ActivityProgramming)activity;
+            }else if(this.getClass() == ActivityProgrammingCpp.class){
+                ActivityProgrammingCpp cpp = (ActivityProgrammingCpp) this;
+                return new ActivityProgrammingCpp(name,description,cpp.getWeight(),cpp.getCompiler(),cpp.getStandard());
+            }else if(this.getClass() == ActivityProgrammingJava.class){
+                ActivityProgrammingJava java = (ActivityProgrammingJava) this;
+                return new ActivityProgrammingJava(name,description,java.getWeight(), java.getJdkVersion(), java.getGradleVersion());
+            }else if(this.getClass() == ActivityProgrammingPython.class){
+                ActivityProgrammingPython python = (ActivityProgrammingPython) this;
+                return new ActivityProgrammingPython(name,description,python.getWeight(),python.getPythonVersion(),python.getUsesVirtualEnv());
             }
+//            else if(this instanceof ActivityProgramming){
+//                System.out.println("===="+this.getClass());
+//                return (ActivityProgramming)this.clone();
+//            }
+//            System.out.println("---"+this.getClass());
+            return super.clone();
         } catch (ActivityException e) {
             throw new RuntimeException(e);
         }
-        return activity;
+//        return activity;
     }
 
     @Override
     public String toString() {
         return name +": "+ description+"\n"+
-        "Total executions: "+ executions.size()+"\n";
+        "Total executions: "+ executions.size();
     }
 }

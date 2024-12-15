@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UniversityTest {
 
     @Test
+    @Tag("sanity")
     @Order(1)
     @DisplayName("Sanity - Fields definition")
     public void checkFieldsSanity() {
@@ -51,6 +52,7 @@ public class UniversityTest {
     }
 
     @Test
+    @Tag("sanity")
     @Order(2)
     @DisplayName("Sanity - Methods definition")
     void checkMethodsSanity() {
@@ -118,8 +120,9 @@ public class UniversityTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(3)
-    @DisplayName("University creation - Valid parameters")
+    @DisplayName("Minimum - Valid parameters")
     void testUniversityCreationValidParameters() throws UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39-43", "https://www.uoc.edu");
         assertEquals("Universitat Oberta de Catalunya", university.getName());
@@ -137,8 +140,9 @@ public class UniversityTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(4)
-    @DisplayName("University creation - Name")
+    @DisplayName("Minimum - Name")
     void testUniversityCreationName() throws UniversityException {
         UniversityException exception = assertThrows(UniversityException.class, () -> new University(null, "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39-43", "https://www.uoc.edu"));
         assertEquals("[ERROR] Name cannot be null, empty or blank", exception.getMessage());
@@ -166,8 +170,9 @@ public class UniversityTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(5)
-    @DisplayName("University creation - Abbreviation")
+    @DisplayName("Minimum - Abbreviation")
     void testUniversityCreationAbbreviation() throws UniversityException {
         UniversityException exception =  assertThrows(UniversityException.class, () -> new University("Universitat Oberta de Catalunya", null, LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39-43", "https://www.uoc.edu"));
         assertEquals("[ERROR] Abbreviation has to contain between 2 and 6 uppercase letters", exception.getMessage());
@@ -204,8 +209,9 @@ public class UniversityTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(6)
-    @DisplayName("University creation - Foundation date")
+    @DisplayName("Minimum - Foundation date")
     void testUniversityCreationFoundationDate() throws UniversityException {
         UniversityException exception = assertThrows(UniversityException.class, () -> new University("Universitat Oberta de Catalunya", "UOC", null, "Av. Tibidabo, 39-43", "https://www.uoc.edu"));
         assertEquals("[ERROR] Foundation date cannot be null or in the future", exception.getMessage());
@@ -240,8 +246,9 @@ public class UniversityTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(7)
-    @DisplayName("University creation - Address")
+    @DisplayName("Minimum - Address")
     void testUniversityCreationAddress() throws UniversityException {
         UniversityException exception = assertThrows(UniversityException.class, () -> new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), null, "https://www.uoc.edu"));
         assertEquals("[ERROR] Address cannot be null", exception.getMessage());
@@ -270,8 +277,9 @@ public class UniversityTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(8)
-    @DisplayName("University creation - Website")
+    @DisplayName("Minimum - Website")
     void testUniversityCreationWebsite() throws UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39-43", "https://www.uoc.edu");
         assertEquals("https://www.uoc.edu", university.getWebsite());

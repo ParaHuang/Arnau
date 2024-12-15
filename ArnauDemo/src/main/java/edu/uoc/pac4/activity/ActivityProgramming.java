@@ -14,11 +14,17 @@ public abstract class ActivityProgramming extends Activity implements Evaluable{
     }
 
     public void setWeight(double weight) {
+        if(weight<0){
+            weight = 0;
+        }
+        if(weight>100){
+            weight = 100;
+        }
         this.weight = weight;
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return super.toString() + " ("+weight+"%)";
     }
 }

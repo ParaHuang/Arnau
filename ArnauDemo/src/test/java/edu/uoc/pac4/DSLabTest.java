@@ -1,12 +1,18 @@
 package edu.uoc.pac4;
 
+import edu.uoc.pac4.activity.*;
 import edu.uoc.pac4.university.University;
 import edu.uoc.pac4.university.UniversityException;
+import edu.uoc.pac4.user.Professor;
+import edu.uoc.pac4.user.Student;
+import edu.uoc.pac4.user.User;
+import edu.uoc.pac4.user.UserException;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -17,10 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DSLabTest {
 
     @Test
+    @Tag("sanity")
     @Order(1)
     @DisplayName("Sanity - Fields definition")
     public void checkFieldsSanity() {
-        assertEquals(9, DSLab.class.getDeclaredFields().length);
+        assertEquals(12, DSLab.class.getDeclaredFields().length);
 
         try {
             assertTrue(Modifier.isPublic(DSLab.class.getDeclaredField("MIN_CPU_REQUIRED").getModifiers()));
@@ -68,17 +75,33 @@ public class DSLabTest {
             assertFalse(Modifier.isStatic(DSLab.class.getDeclaredField("status").getModifiers()));
             assertFalse(Modifier.isFinal(DSLab.class.getDeclaredField("status").getModifiers()));
             assertEquals(DSLabStatus.class, DSLab.class.getDeclaredField("status").getType());
+
+            assertTrue(Modifier.isPrivate(DSLab.class.getDeclaredField("users").getModifiers()));
+            assertFalse(Modifier.isStatic(DSLab.class.getDeclaredField("users").getModifiers()));
+            assertFalse(Modifier.isFinal(DSLab.class.getDeclaredField("users").getModifiers()));
+            assertEquals("java.util.LinkedList", DSLab.class.getDeclaredField("users").getType().getName());
+
+            assertTrue(Modifier.isPrivate(DSLab.class.getDeclaredField("activities").getModifiers()));
+            assertFalse(Modifier.isStatic(DSLab.class.getDeclaredField("activities").getModifiers()));
+            assertFalse(Modifier.isFinal(DSLab.class.getDeclaredField("activities").getModifiers()));
+            assertEquals(LinkedList.class, DSLab.class.getDeclaredField("activities").getType());
+
+            assertTrue(Modifier.isPrivate(DSLab.class.getDeclaredField("evaluableActivities").getModifiers()));
+            assertFalse(Modifier.isStatic(DSLab.class.getDeclaredField("evaluableActivities").getModifiers()));
+            assertFalse(Modifier.isFinal(DSLab.class.getDeclaredField("evaluableActivities").getModifiers()));
+            assertEquals(LinkedList.class, DSLab.class.getDeclaredField("evaluableActivities").getType());
         } catch (NoSuchFieldException e) {
             fail("[ERROR] There is some problem with the definition of the attributes: " + e.getMessage());
         }
     }
 
     @Test
+    @Tag("sanity")
     @Order(2)
     @DisplayName("Sanity - Methods definition")
     void checkMethodsSanity() {
         assertEquals(1, DSLab.class.getDeclaredConstructors().length);
-        assertEquals(19, Arrays.stream(DSLab.class.getDeclaredMethods()).filter(m -> Modifier.isPublic(m.getModifiers())).toList().size());
+        assertEquals(24, Arrays.stream(DSLab.class.getDeclaredMethods()).filter(m -> Modifier.isPublic(m.getModifiers())).toList().size());
 
         try {
             assertTrue(Modifier.isPublic(DSLab.class.getDeclaredMethod("getName").getModifiers()));
@@ -175,14 +198,40 @@ public class DSLabTest {
             assertFalse(Modifier.isStatic(DSLab.class.getDeclaredMethod("equals", Object.class).getModifiers()));
             assertFalse(Modifier.isFinal(DSLab.class.getDeclaredMethod("equals", Object.class).getModifiers()));
             assertEquals(boolean.class, DSLab.class.getDeclaredMethod("equals", Object.class).getReturnType());
+
+            assertTrue(Modifier.isPublic(DSLab.class.getDeclaredMethod("addUser", User.class).getModifiers()));
+            assertFalse(Modifier.isStatic(DSLab.class.getDeclaredMethod("addUser", User.class).getModifiers()));
+            assertFalse(Modifier.isFinal(DSLab.class.getDeclaredMethod("addUser", User.class).getModifiers()));
+            assertEquals(void.class, DSLab.class.getDeclaredMethod("addUser", User.class).getReturnType());
+
+            assertTrue(Modifier.isPublic(DSLab.class.getDeclaredMethod("getUsers").getModifiers()));
+            assertFalse(Modifier.isStatic(DSLab.class.getDeclaredMethod("getUsers").getModifiers()));
+            assertFalse(Modifier.isFinal(DSLab.class.getDeclaredMethod("getUsers").getModifiers()));
+            assertEquals(LinkedList.class, DSLab.class.getDeclaredMethod("getUsers").getReturnType());
+
+            assertTrue(Modifier.isPublic(DSLab.class.getDeclaredMethod("addActivity", Activity.class).getModifiers()));
+            assertFalse(Modifier.isStatic(DSLab.class.getDeclaredMethod("addActivity", Activity.class).getModifiers()));
+            assertFalse(Modifier.isFinal(DSLab.class.getDeclaredMethod("addActivity", Activity.class).getModifiers()));
+            assertEquals(void.class, DSLab.class.getDeclaredMethod("addActivity", Activity.class).getReturnType());
+
+            assertTrue(Modifier.isPublic(DSLab.class.getDeclaredMethod("getActivities").getModifiers()));
+            assertFalse(Modifier.isStatic(DSLab.class.getDeclaredMethod("getActivities").getModifiers()));
+            assertFalse(Modifier.isFinal(DSLab.class.getDeclaredMethod("getActivities").getModifiers()));
+            assertEquals(LinkedList.class, DSLab.class.getDeclaredMethod("getActivities").getReturnType());
+
+            assertTrue(Modifier.isPublic(DSLab.class.getDeclaredMethod("getEvaluableActivities").getModifiers()));
+            assertFalse(Modifier.isStatic(DSLab.class.getDeclaredMethod("getEvaluableActivities").getModifiers()));
+            assertFalse(Modifier.isFinal(DSLab.class.getDeclaredMethod("getEvaluableActivities").getModifiers()));
+            assertEquals(LinkedList.class, DSLab.class.getDeclaredMethod("getEvaluableActivities").getReturnType());
         } catch (Exception e) {
             fail("[ERROR] There is some problem with the definition of the methods: " + e.getMessage());
         }
     }
 
     @Test
+    @Tag("minimum")
     @Order(3)
-    @DisplayName("DSLab creation - Valid parameters")
+    @DisplayName("Minimum - Valid parameters")
     void testDSLabCreationValidParameters() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
         DSLab dsLab = new DSLab("DSLab", "DSLab description", 1, 0, 0, 2_147_483_648L, university);
@@ -199,8 +248,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(4)
-    @DisplayName("DSLab creation - Name")
+    @DisplayName("Minimum - Name")
     void testDSLabCreationName() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
 
@@ -227,8 +277,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(5)
-    @DisplayName("DSLab creation - Description")
+    @DisplayName("Minimum - Description")
     void testDSLabCreationDescription() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
 
@@ -250,8 +301,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(6)
-    @DisplayName("DSLab creation - Version major")
+    @DisplayName("Minimum - Version major")
     void testDSLabCreationVersionMajor() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
 
@@ -273,8 +325,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(7)
-    @DisplayName("DSLab creation - Version minor")
+    @DisplayName("Minimum - Version minor")
     void testDSLabCreationVersionMinor() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
 
@@ -296,8 +349,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(8)
-    @DisplayName("DSLab creation - Version patch")
+    @DisplayName("Minimum - Version patch")
     void testDSLabCreationVersionPatch() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
 
@@ -319,8 +373,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(9)
-    @DisplayName("DSLab creation - CPU")
+    @DisplayName("Minimum - CPU")
     void testDSLabCreationCPU() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
 
@@ -342,8 +397,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(10)
-    @DisplayName("DSLab creation - University")
+    @DisplayName("Minimum - University")
     void testDSLabCreationUniversity() throws DSLabException, UniversityException {
         DSLabException exception = assertThrows(DSLabException.class, () -> new DSLab("DSLab", "DSLab description", 1, 0, 0, 2_147_483_648L, null));
         assertEquals("[ERROR] University cannot be null", exception.getMessage());
@@ -362,8 +418,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(11)
-    @DisplayName("DSLab creation - Status")
+    @DisplayName("Minimum - Status")
     void testDSLabCreationStatus() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
         DSLab dsLab = new DSLab("DSLab", "DSLab description", 1, 0, 0, 2_147_483_648L, university);
@@ -381,8 +438,9 @@ public class DSLabTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(12)
-    @DisplayName("DSLab creation - Version")
+    @DisplayName("Minimum - Version")
     void testDSLabCreationVersion() throws DSLabException, UniversityException {
         University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
         DSLab dsLab = new DSLab("DSLab", "DSLab description", 1, 2, 3, 2_147_483_648L, university);
@@ -397,6 +455,78 @@ public class DSLabTest {
 
         dsLab.setVersionPatch(1);
         assertEquals("2.1.1", dsLab.getVersion());
+    }
+
+    @Test
+    @Tag("advanced")
+    @Order(13)
+    @DisplayName("Advanced - Users")
+    void testDSLabCreationUsers() throws DSLabException, UniversityException, UserException {
+        University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
+        DSLab dsLab = new DSLab("DSLab", "DSLab description", 1, 0, 0, 2_147_483_648L, university);
+
+        assertEquals(0, dsLab.getUsers().size());
+
+        Professor professor = new Professor("professor@uoc.edu", "Name", "Surname");
+        dsLab.addUser(professor);
+
+        assertEquals(1, dsLab.getUsers().size());
+        assertEquals(professor, dsLab.getUsers().getFirst());
+
+        Student student = new Student("student@uoc.edu", "Name", "Surname");
+        dsLab.addUser(student);
+
+        assertEquals(2, dsLab.getUsers().size());
+        assertEquals(professor, dsLab.getUsers().getFirst());
+        assertEquals(student, dsLab.getUsers().getLast());
+    }
+
+    @Test
+    @Tag("advanced")
+    @Order(14)
+    @DisplayName("Advanced - Activities")
+    void testDSLabCreationActivities() throws DSLabException, UniversityException, UserException, ActivityException {
+        University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
+        DSLab dsLab = new DSLab("DSLab", "DSLab description", 1, 0, 0, 2_147_483_648L, university);
+
+        assertEquals(0, dsLab.getActivities().size());
+
+        ActivityQuiz activity = new ActivityQuiz("Activity 1", "Description of Activity 1", ActivityQuizType.MULTIPLE_CHOICE);
+        dsLab.addActivity(activity);
+
+        assertEquals(1, dsLab.getActivities().size());
+        assertEquals(activity, dsLab.getActivities().getFirst());
+
+        ActivityProgrammingCpp activity2 = new ActivityProgrammingCpp("Activity 2", "Description of Activity 2", 25.0, "clang", "C++11");
+        dsLab.addActivity(activity2);
+
+        assertEquals(2, dsLab.getActivities().size());
+        assertEquals(activity, dsLab.getActivities().getFirst());
+        assertEquals(activity2, dsLab.getActivities().getLast());
+    }
+
+    @Test
+    @Tag("advanced")
+    @Order(15)
+    @DisplayName("Advanced - Evaluable activities")
+    void testDSLabCreationEvaluableActivities() throws DSLabException, UniversityException, UserException, ActivityException {
+        University university = new University("Universitat Oberta de Catalunya", "UOC", LocalDate.of(1994, 10, 6), "Av. Tibidabo, 39", "www.uoc.edu");
+        DSLab dsLab = new DSLab("DSLab", "DSLab description", 1, 0, 0, 2_147_483_648L, university);
+
+        assertEquals(0, dsLab.getEvaluableActivities().size());
+
+        ActivityQuiz activity = new ActivityQuiz("Activity 1", "Description of Activity 1", ActivityQuizType.MULTIPLE_CHOICE);
+        dsLab.addActivity(activity);
+
+        assertEquals(1, dsLab.getActivities().size());
+        assertEquals(0, dsLab.getEvaluableActivities().size());
+
+        ActivityProgrammingCpp activity2 = new ActivityProgrammingCpp("Activity 2", "Description of Activity 2", 25.0, "clang", "C++11");
+        dsLab.addActivity(activity2);
+
+        assertEquals(2, dsLab.getActivities().size());
+        assertEquals(1, dsLab.getEvaluableActivities().size());
+        assertEquals(activity2, dsLab.getEvaluableActivities().getFirst());
     }
 
 }

@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DSLabStatusTest {
 
     @Test
+    @Tag("sanity")
     @Order(1)
     @DisplayName("Sanity - Fields definition")
     void checkFieldsSanity() {
@@ -42,6 +43,7 @@ public class DSLabStatusTest {
     }
 
     @Test
+    @Tag("sanity")
     @Order(2)
     @DisplayName("Sanity - Methods definition")
     void checkMethodsSanity() {
@@ -64,8 +66,9 @@ public class DSLabStatusTest {
     }
 
     @Test
+    @Tag("minimum")
     @Order(3)
-    @DisplayName("DSLabStatus - Status")
+    @DisplayName("Minimum - Status")
     void testDSLabStatusStatus() {
         assertEquals("Active", DSLabStatus.ACTIVE.getStatus());
         assertEquals("Inactive", DSLabStatus.INACTIVE.getStatus());

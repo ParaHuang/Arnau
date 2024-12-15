@@ -18,6 +18,6 @@ public class ActivityQuiz extends Activity{
 
     @Override
     public String toString() {
-        return super.toString() + type.getDescription();
+        return super.toString() +"\n"+ type.getDescription();
     }
 }

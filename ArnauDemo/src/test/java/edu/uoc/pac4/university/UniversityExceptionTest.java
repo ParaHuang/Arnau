@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UniversityExceptionTest {
 
     @Test
+    @Tag("sanity")
     @Order(1)
     @DisplayName("Sanity - Fields definition")
     void checkExceptions() {
@@ -54,6 +55,7 @@ public class UniversityExceptionTest {
     }
 
     @Test
+    @Tag("sanity")
     @Order(2)
     @DisplayName("Sanity - Constructors definition")
     void checkConstructors() {
@@ -70,6 +72,7 @@ public class UniversityExceptionTest {
     }
 
     @Test
+    @Tag("sanity")
     @Order(3)
     @DisplayName("Sanity - Methods definition")
     void checkMethods() {
@@ -80,6 +83,7 @@ public class UniversityExceptionTest {
     }
 
     @Test
+    @Tag("sanity")
     @Order(4)
     @DisplayName("Sanity - Inheritance definition")
     void checkInheritance() {

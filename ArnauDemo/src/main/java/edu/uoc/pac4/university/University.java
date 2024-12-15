@@ -18,15 +18,10 @@ public class University {
         setWebsite(website);
     }
 
+
     @Override
     public String toString() {
-        return "University{" +
-                "name='" + name + '\'' +
-                ", abbreviation='" + abbreviation + '\'' +
-                ", foundationDate=" + foundationDate +
-                ", address='" + address + '\'' +
-                ", website='" + website + '\'' +
-                '}';
+        return name+", "+abbreviation+", "+foundationDate+", "+address+", "+website;
     }
 
     public String getName() {
